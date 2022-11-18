@@ -72,18 +72,37 @@ client.once(Events.ClientReady, c => {
           .setTitle('Soundboard')
           .setDescription('Click a button to play a sound!')
 
-        const row = new ActionRowBuilder()
+        var rows = [
+          new ActionRowBuilder()
+        ]
+
+        var buttonCount = 0
 
         for (k in sounds) {
-          row.addComponents(
-            new ButtonBuilder()
-              .setCustomId(k)
-              .setLabel(k)
-              .setStyle(ButtonStyle.Primary)
-          )
+          if (buttonCount < 5) {
+            rows[rows.length - 1].addComponents(
+              new ButtonBuilder()
+                .setCustomId(k)
+                .setLabel(k)
+                .setStyle(ButtonStyle.Primary)
+            )
+
+            buttonCount += 1
+          } else {
+            rows.push(new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                .setCustomId(k)
+                .setLabel(k)
+                .setStyle(ButtonStyle.Primary)
+            ))
+
+            buttonCount = 1
+          }
         }
 
-        await interaction.reply({ embeds: [embed], components: [row], emphemeral: true })
+        console.log(rows)
+
+        await interaction.reply({ embeds: [embed], components: rows, emphemeral: true })
       }
     }
 
@@ -91,6 +110,14 @@ client.once(Events.ClientReady, c => {
       const audio = createAudioResource(sounds[interaction.customId])
       audioPlayer.play(audio)
       connection.subscribe(audioPlayer)
+
+      await interaction.reply({ content: `Playing ${interaction.customId}!`, emphemeral: true })
+
+      new Promise((resolve) => {
+        setTimeout(() => {
+          interaction.deleteReply()
+        }), 10000
+      })
     }
   })
 })
