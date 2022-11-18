@@ -1,0 +1,19 @@
+{
+  "name": "discord-soundboard",
+  "version": "1.0.0",
+  "description": "Allows users to play sounds in a voice channel.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "startDev": "nodemon index.js"
+  },
+  "author": "MCT32",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
