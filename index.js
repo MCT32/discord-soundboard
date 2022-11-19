@@ -61,6 +61,11 @@ client.once(Events.ClientReady, c => {
       }
 
       if (interaction.commandName === 'leave') {
+        if (connection == undefined || connection._state.status === 'destroyed') {
+          replyAndDelete('Not in a voice channel.', interaction, 3000)
+          return
+        }
+
         connection.disconnect()
         connection.destroy()
 
