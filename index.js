@@ -46,7 +46,7 @@ client.once(Events.ClientReady, c => {
         const channel = await interaction.options.getChannel('channel')
 
         if (channel.type != ChannelType.GuildVoice) {
-          interaction.reply({ content: 'Please select a voice channel.', emphemeral: true })
+          replyAndDelete('Please select a voice channel.', interaction, 3000)
           return
         }
 
@@ -57,14 +57,14 @@ client.once(Events.ClientReady, c => {
           selfDeaf: false
         })
 
-        await interaction.reply({ content: `Joined!`, emphemeral: true })
+        replyAndDelete('Joined!', interaction, 3000)
       }
 
       if (interaction.commandName === 'leave') {
         connection.disconnect()
         connection.destroy()
 
-        await interaction.reply({ content: `Bye!`, emphemeral: true })
+        replyAndDelete('Bye!', interaction, 3000)
       }
 
       if (interaction.commandName === 'sounds') {
@@ -102,7 +102,7 @@ client.once(Events.ClientReady, c => {
 
         console.log(rows)
 
-        await interaction.reply({ embeds: [embed], components: rows, emphemeral: true })
+        interaction.reply({ embeds: [embed], components: rows, emphemeral: true })
       }
     }
 
@@ -111,15 +111,19 @@ client.once(Events.ClientReady, c => {
       audioPlayer.play(audio)
       connection.subscribe(audioPlayer)
 
-      await interaction.reply({ content: `Playing ${interaction.customId}!`, emphemeral: true })
-
-      new Promise((resolve) => {
-        setTimeout(() => {
-          interaction.deleteReply()
-        }), 10000
-      })
+      replyAndDelete(`Playing ${interaction.customId}!`, interaction, 3000)
     }
   })
 })
+
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time))
+}
+
+async function replyAndDelete(response, interaction, time) {
+  interaction.reply({ content: response, emphemeral: true })
+  await delay(time)
+  interaction.deleteReply()
+}
 
 client.login(process.env.TOKEN)
