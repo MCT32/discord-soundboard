@@ -115,6 +115,11 @@ client.once(Events.ClientReady, c => {
         return
       }
 
+      if (connection == undefined || connection._state.status === 'destroyed') {
+        replyAndDelete('Not in a voice channel.', interaction, 3000)
+        return
+      }
+
       const audio = createAudioResource(sounds[interaction.customId])
       audioPlayer.play(audio)
       connection.subscribe(audioPlayer)
