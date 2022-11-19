@@ -112,6 +112,11 @@ client.once(Events.ClientReady, c => {
     }
 
     if (interaction.isButton()) {
+      if (sounds[interaction.customId] == undefined) {
+        replyAndDelete('That sound no longer exists.', interaction, 3000)
+        return
+      }
+
       const audio = createAudioResource(sounds[interaction.customId])
       audioPlayer.play(audio)
       connection.subscribe(audioPlayer)
