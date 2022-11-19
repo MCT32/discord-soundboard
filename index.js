@@ -105,11 +105,25 @@ client.once(Events.ClientReady, c => {
           }
         }
 
+
+        rows.push(new ActionRowBuilder().addComponents(
+          new ButtonBuilder()
+            .setCustomId('close')
+            .setLabel('Close')
+            .setStyle(ButtonStyle.Danger)
+        ))
+
         interaction.reply({ embeds: [embed], components: rows, emphemeral: true })
       }
     }
 
     if (interaction.isButton()) {
+      if (interaction.customId == 'close') {
+        interaction.message.delete()
+        replyAndDelete('Soundboard removed.', interaction, 3000)
+        return
+      }
+
       if (sounds[interaction.customId] == undefined) {
         replyAndDelete('That sound no longer exists.', interaction, 3000)
         return
