@@ -4,6 +4,10 @@ require('dotenv').config()
 
 const sounds = require('./sounds.json')
 
+if (sounds['close'] != undefined) {
+  console.log('WARNING! You have a sound called "close" in your sounds.json. This sound cannot be played and instead will close the soundsboard. Please choose another name.')
+}
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] })
 
 const audioPlayer = createAudioPlayer({
