@@ -105,8 +105,6 @@ client.once(Events.ClientReady, c => {
           }
         }
 
-        console.log(rows)
-
         interaction.reply({ embeds: [embed], components: rows, emphemeral: true })
       }
     }
